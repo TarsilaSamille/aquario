@@ -1,20 +1,36 @@
-'use client'
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Home, LogIn, LayoutDashboard, Settings } from 'lucide-react'
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Home, LogIn, LayoutDashboard, Settings, LogOut } from "lucide-react";
 
 export function Navbar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const navItems = [
-    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/configure-parameters", label: "Configure", icon: Settings },
-    { href: "/", label: "Login", icon: LogIn },
-  ];
+  useEffect(() => {
+    const authStatus = localStorage.getItem("isAuthenticated");
+    setIsAuthenticated(authStatus === "true");
+  }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+    setIsAuthenticated(false);
+    router.push("/");
+  };
+
+  let navItems = [{ href: "/", label: "Login", icon: LogIn }];
+
+  if (isAuthenticated) {
+    navItems = [
+      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { href: "/configure-parameters", label: "Configure", icon: Settings }
+    ];
+  }
   return (
     <nav className="bg-background border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,6 +55,16 @@ export function Navbar() {
                 </Link>
               </div>
             ))}
+            {isAuthenticated && (
+              <Button
+                variant="ghost"
+                className="inline-flex items-center px-1 pt-1 text-sm font-medium text-muted-foreground hover:text-primary hover:border-primary"
+                onClick={handleLogout}
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            )}
           </div>
         </div>
       </div>
@@ -51,18 +77,28 @@ export function Navbar() {
               asChild
               variant="ghost"
               className={cn(
-                "block pl-3 pr-4 py-2 text-base font-medium w-full justify-start",
+                "block pl-3 pr-4 py-2 border-l-4 text-base font-medium",
                 pathname === item.href
-                  ? "text-primary bg-primary/10"
-                  : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+                  ? "bg-primary-50 border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:bg-primary-50 hover:border-primary hover:text-primary"
               )}
             >
               <Link href={item.href}>
-                <item.icon className="w-4 h-4 mr-2 inline" />
+                <item.icon className="w-4 h-4 mr-2" />
                 {item.label}
               </Link>
             </Button>
           ))}
+          {isAuthenticated && (
+            <Button
+              variant="ghost"
+              className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium text-muted-foreground hover:bg-primary-50 hover:border-primary hover:text-primary"
+              onClick={handleLogout}
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </Button>
+          )}
         </div>
       </div>
     </nav>

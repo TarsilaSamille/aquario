@@ -1,10 +1,12 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { JSX, useEffect } from "react";
-import { ComponentType } from "react";
 
-const withAuth = (WrappedComponent: ComponentType) => {
-  return (props: JSX.IntrinsicAttributes) => {
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+const withAuth = (WrappedComponent: React.ComponentType) => {
+  return function AuthComponent(
+    props: React.ComponentProps<typeof WrappedComponent>
+  ) {
     const router = useRouter();
 
     useEffect(() => {

@@ -1,6 +1,7 @@
+"use client";
+import withAuth from "@/components/withAuth";
 import { Navbar } from "@/components/navbar";
 import { AquariumDashboardComponent } from "@/components/aquarium-dashboard";
-import withAuth from "@/components/withAuth";
 
 const Dashboard = () => {
   return (
@@ -11,4 +12,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default withAuth(Dashboard);
