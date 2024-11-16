@@ -1,42 +1,49 @@
-"use client"
-
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export function LoginFormComponent() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
+    e.preventDefault();
+    setError("");
 
     if (!email || !password) {
-      setError("Please fill in all fields.")
-      return
-    }
-
-    if (email === "admin@admin" && password === "admin") {
-      alert("Admin login successful.");
+      setError("Please fill in all fields.");
       return;
     }
 
-    // Here you would typically handle the login logic
-    console.log("Login attempted with:", { email, password })
-    // For demonstration purposes, we'll just log the attempt
-    alert("Login attempt registered. Check the console for details.")
-  }
-   
+    if (email === "admin@admin" && password === "admin") {
+      localStorage.setItem("isAuthenticated", "true");
+      router.push("/dashboard");
+    } else {
+      setError("Invalid email or password.");
+    }
+  };
+
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
         <CardTitle>Login</CardTitle>
-        <CardDescription>Enter your credentials to access your account.</CardDescription>
+        <CardDescription>
+          Enter your credentials to access your account.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -75,5 +82,5 @@ export function LoginFormComponent() {
         <Button variant="link">Forgot password?</Button>
       </CardFooter>
     </Card>
-  )
+  );
 }

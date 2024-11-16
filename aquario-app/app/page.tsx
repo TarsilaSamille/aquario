@@ -1,13 +1,15 @@
 import { Navbar } from "@/components/navbar";
-import { AquariumDashboardComponent } from "@/components/aquarium-dashboard";
+import { LoginFormComponent } from "@/components/login-form";
 
-const Dashboard = () => {
+const Login = () => {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <AquariumDashboardComponent />
+      <div className="flex-grow flex items-center justify-center">
+        <LoginFormComponent />
+      </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default Login;

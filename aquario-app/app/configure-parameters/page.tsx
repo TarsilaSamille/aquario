@@ -3,9 +3,11 @@ import { ConfigureParametersComponent } from "@/components/configure-parameters"
 
 const ConfigureParameters = () => {
   return (
-    <div>
+     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <ConfigureParametersComponent />
+      <div className="flex-grow flex items-center justify-center">
+        <ConfigureParametersComponent />
+      </div>
     </div>
   );
 };

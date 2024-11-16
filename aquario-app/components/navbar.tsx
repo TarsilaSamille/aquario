@@ -10,9 +10,9 @@ export function Navbar() {
   const pathname = usePathname()
 
   const navItems = [
-    { href: "/", label: "Dashboard", icon: LayoutDashboard },
-        { href: "/configure-parameters", label: "Configure", icon: Settings },
-    { href: "/login", label: "Login", icon: LogIn },
+    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/configure-parameters", label: "Configure", icon: Settings },
+    { href: "/", label: "Login", icon: LogIn },
   ];
 
   return (
