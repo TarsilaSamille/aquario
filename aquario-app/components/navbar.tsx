@@ -23,12 +23,13 @@ export function Navbar() {
     router.push("/");
   };
 
-  let navItems = [{ href: "/", label: "Login", icon: LogIn }];
+  let navItems = [{ href: "/home", label: "Home", icon: Home },{ href: "/", label: "Login", icon: LogIn }];
 
   if (isAuthenticated) {
     navItems = [
+      { href: "/landing-page", label: "Home", icon: Home },
       { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-      { href: "/configure-parameters", label: "Configure", icon: Settings }
+      { href: "/configure-parameters", label: "Configure", icon: Settings },
     ];
   }
   return (
