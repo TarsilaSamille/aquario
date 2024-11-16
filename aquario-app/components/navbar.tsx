@@ -49,28 +49,27 @@ export function Navbar() {
                     : "text-muted-foreground hover:text-primary hover:border-primary"
                 )}
               >
-                <Link href={item.href}>
+                <Link href={item.href} className="flex items-center">
                   <item.icon className="w-4 h-4 mr-2" />
                   {item.label}
                 </Link>
               </div>
             ))}
             {isAuthenticated && (
-              <Button
-                variant="ghost"
-                className="inline-flex items-center px-1 pt-1 text-sm font-medium text-muted-foreground hover:text-primary hover:border-primary"
+              <div
+                className="inline-flex items-center px-1 pt-1 text-sm font-medium text-muted-foreground hover:text-primary hover:border-primary cursor-pointer"
                 onClick={handleLogout}
               >
                 <LogOut className="w-4 h-4 mr-2" />
                 Logout
-              </Button>
+              </div>
             )}
           </div>
         </div>
       </div>
       {/* Mobile menu */}
       <div className="sm:hidden">
-        <div className="pt-2 pb-3 space-y-1">
+        <div className="pt-2 pb-3 space-y-1 ">
           {navItems.map((item) => (
             <Button
               key={item.href}
@@ -83,21 +82,22 @@ export function Navbar() {
                   : "border-transparent text-muted-foreground hover:bg-primary-50 hover:border-primary hover:text-primary"
               )}
             >
-              <Link href={item.href}>
+              <Link href={item.href} className="flex items-center">
                 <item.icon className="w-4 h-4 mr-2" />
                 {item.label}
               </Link>
             </Button>
           ))}
           {isAuthenticated && (
-            <Button
-              variant="ghost"
-              className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium text-muted-foreground hover:bg-primary-50 hover:border-primary hover:text-primary"
+            <div
+              className="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-muted-foreground hover:bg-primary-50 hover:border-primary hover:text-primary text-center"
               onClick={handleLogout}
             >
+              <div className="flex items-center justify-center">
               <LogOut className="w-4 h-4 mr-2" />
               Logout
-            </Button>
+              </div>
+            </div>
           )}
         </div>
       </div>
