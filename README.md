@@ -1,3 +1,10 @@
+# Fast links
+Front: https://aquario-sepia.vercel.app/ admin
+Slide: https://www.overleaf.com/5849787659hbvkpqjvbzqx#0b17a5
+Modelo: https://wokwi.com/projects/414666125270216705
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
