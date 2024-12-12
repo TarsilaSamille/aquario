@@ -1,7 +1,9 @@
 #include <WiFi.h>
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
-// https://wokwi.com/projects/417072128099773441
+#include <ESP32Servo.h>
+
+//https://wokwi.com/projects/417084729288172545
 // Definições de pinos
 #define LED_AZUL 5
 #define LED_BRANCO 2
@@ -16,6 +18,8 @@
 #define TRIMPOT_AMONIA 35
 #define LDR_PIN 32
 #define TERMISTOR_PIN 33
+#define SERVO_PIN 23
+Servo servo;
 
 // Definições do display OLED
 #define SCREEN_WIDTH 128
@@ -52,6 +56,8 @@ Wire.begin(25, 26);
   pinMode(BOTAO_ALIMENTAR, INPUT);
   pinMode(BOTAO_VERIFICAR_FILTRO, INPUT);
   pinMode(BOTAO_TROCAR_AGUA, INPUT);
+  servo.attach(SERVO_PIN, 500, 2400);
+int pos = 0;
 
   // Inicialização do display OLED
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
@@ -92,6 +98,12 @@ void loop() {
 
   // Verificação de alertas
   verificarAlertas();
+int pos = 0;
+
+    for (pos = 0; pos <= 180; pos += 1) {
+    servo.write(pos);
+    delay(15);
+  }
 
   delay(100);
 }
