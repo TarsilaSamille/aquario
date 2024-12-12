@@ -1,11 +1,13 @@
 #include <WiFi.h>
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
-// https://wokwi.com/projects/417024190531563521
+// https://wokwi.com/projects/417072128099773441
 // Definições de pinos
 #define LED_AZUL 5
-#define LED_VERDE 2
+#define LED_BRANCO 2
 #define LED_VERMELHO 4
+#define LED_VERDE 16
+#define LED_AMARELO 17
 #define BUZZER 15
 #define BOTAO_ALIMENTAR 18
 #define BOTAO_VERIFICAR_FILTRO 19
@@ -42,8 +44,10 @@ void setup() {
 Wire.begin(25, 26);
   // Configuração dos pinos
   pinMode(LED_AZUL, OUTPUT);
-  pinMode(LED_VERDE, OUTPUT);
-  pinMode(LED_VERMELHO, OUTPUT);
+  pinMode(LED_BRANCO, OUTPUT);
+  pinMode(LED_VERMELHO, OUTPUT);  
+  pinMode(LED_VERDE, OUTPUT);  
+  pinMode(LED_AMARELO, OUTPUT);
   pinMode(BUZZER, OUTPUT);
   pinMode(BOTAO_ALIMENTAR, INPUT);
   pinMode(BOTAO_VERIFICAR_FILTRO, INPUT);
@@ -77,7 +81,7 @@ void loop() {
     registrarEvento("Alimentação");
   }
   if (leitura2 == HIGH) {
-    registrarEvento("Verificação do Filtro");
+    registrarEvento("  do Filtro");
   }
   if (leitura3 == HIGH) {
     registrarEvento("Troca de Água");
@@ -125,7 +129,7 @@ float lerLuz() {
 void registrarEvento(const char* evento) {
   Serial.print("Evento registrado: ");
   Serial.println(evento);
-  // adicionar código para registrar o evento em um servidor e memória
+  // Aqui você pode adicionar código para registrar o evento em um servidor ou memória
 }
 
 void atualizarDisplay() {
@@ -151,10 +155,23 @@ void verificarAlertas() {
       acionarAlerta("pH fora do intervalo!");
     }
     if (amonia > 1.0) {
-      acionarAlerta("Nível de amônia alto!");
+      acionarAlerta("Nível de amônia  alto!");
     }
     ultimoAlerta = agora;
   }
+
+   if (ph < 6.5 || ph > 8.5) {
+        digitalWrite(LED_VERDE, HIGH);
+    }else{
+  digitalWrite(LED_VERDE, LOW);
+
+    }
+    if (amonia > 1.0) {
+              digitalWrite(LED_AMARELO, HIGH);
+    }else{
+  digitalWrite(LED_AMARELO, LOW);
+
+    }
 }
 
 void acionarAlerta(const char* mensagem) {
@@ -163,4 +180,4 @@ void acionarAlerta(const char* mensagem) {
   tone(BUZZER, 1000, 2000); // Buzzer toca por 2 segundos
   delay(2000);
   digitalWrite(LED_VERMELHO, LOW);
-} 
+}
