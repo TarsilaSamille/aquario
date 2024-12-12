@@ -1,7 +1,10 @@
 # Fast links
 Front: https://aquario-sepia.vercel.app/ admin
+
 Slide: https://www.overleaf.com/5849787659hbvkpqjvbzqx#0b17a5
-Modelo: https://wokwi.com/projects/414666125270216705
+
+Modelo: https://wokwi.com/projects/417084729288172545
+
 
 
 
