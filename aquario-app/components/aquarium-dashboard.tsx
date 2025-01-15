@@ -27,12 +27,12 @@ export function AquariumDashboardComponent() {
       <h1 className="text-3xl font-bold text-center mb-6">
         Dashboard do Aquário
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
               <Thermometer className="mr-2" />
-              Temperatura
+              Temperaturaa
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -57,6 +57,19 @@ export function AquariumDashboardComponent() {
             <CardTitle className="flex items-center">
               <Waves className="mr-2" />
               Nível de Amônia
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-semibold">0.25 ppm</p>
+            <p className="text-sm text-muted-foreground">Ideal: &lt;0.25 ppm</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Waves className="mr-2" />
+              Nível de Luminosidade
             </CardTitle>
           </CardHeader>
           <CardContent>
