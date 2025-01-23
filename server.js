@@ -56,7 +56,7 @@ client.on("message", function (topic, message) {
           JSON.stringify({
             topic: topic.toString(),
             message: parseFloat(message.toString()),
-            time: new Date().toISOString(),
+            time: new Date(),
           })
         );
       }

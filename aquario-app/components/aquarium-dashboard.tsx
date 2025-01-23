@@ -8,10 +8,10 @@ export function AquariumDashboardComponent() {
     const [feedCount, setFeedCount] = useState(0);
     const [lastWaterChange, setLastWaterChange] = useState<Date | null>(null);
     const [lastFilterChange, setLastFilterChange] = useState<Date | null>(null);
-    const [temperature, setTemperature] = useState<number | null>(null);
-    const [ph, setPh] = useState<number | null>(null);
-    const [amonia, setAmonia] = useState<number | null>(null);
-    const [luminosity, setLuminosity] = useState<number | null>(null);
+    const [temperature, setTemperature] = useState<number | null>(25);
+    const [ph, setPh] = useState<number | null>(3);
+    const [amonia, setAmonia] = useState<number | null>(1);
+    const [luminosity, setLuminosity] = useState<number | null>(100);
     const [autoFeed, setAutoFeed] = useState<boolean>(false); // Alimentação automática
     const [lastFeedDate, setLastFeedDate] = useState<Date | null>(null); // Registro da última alimentação
     const [showFeedError, setShowFeedError] = useState(false); // Controle do erro de alimentação
@@ -28,35 +28,32 @@ export function AquariumDashboardComponent() {
 
    ws.onmessage = (event) => {
      const data = JSON.parse(event.data);
-     if (data.message!==null)
-       switch (data.topic) {
-         case "tarsillasamile@gmail.com/temp":
-           setTemperature(parseFloat(data.message));
-           break;
-         case "tarsillasamile@gmail.com/ph":
-           setPh(parseFloat(data.message));
-           break;
-         case "tarsillasamile@gmail.com/amonia":
-           setAmonia(parseFloat(data.message));
-           break;
-         case "tarsillasamile@gmail.com/luz":
-           setLuminosity(parseFloat(data.message));
-           break;
-         case "tarsillasamile@gmail.com/alimentacao":
-            console.log(data);
-           setLastFeedDate(data.time);
-           break;
-         case "tarsillasamile@gmail.com/filtro":
-            console.log(data);
-           setLastFilterChange(data.time);
-           break;
-         case "tarsillasamile@gmail.com/agua":
-            console.log(data);
-           setLastWaterChange(data.time);
-           break;
-         default:
-           break;
-       }
+    switch (data.topic) {
+      case "tarsillasamile@gmail.com/temp":
+        if (data.message !== null) setTemperature(parseFloat(data.message));
+        break;
+      case "tarsillasamile@gmail.com/ph":
+        if (data.message !== null) setPh(parseFloat(data.message));
+        break;
+      case "tarsillasamile@gmail.com/amonia":
+        if (data.message !== null) setAmonia(parseFloat(data.message));
+        break;
+      case "tarsillasamile@gmail.com/luz":
+        if (data.message !== null) setLuminosity(parseFloat(data.message));
+        break;
+      case "tarsillasamile@gmail.com/alimentacao":
+        setLastFeedDate(data.time);
+        setFeedCount((prevCount) => prevCount + 1);
+        break;
+      case "tarsillasamile@gmail.com/filtro":
+        setLastFilterChange(data.time);
+        break;
+      case "tarsillasamile@gmail.com/agua":
+        setLastWaterChange(data.time);
+        break;
+      default:
+        break;
+    }
    };
 
    ws.onclose = () => {
@@ -125,7 +122,7 @@ export function AquariumDashboardComponent() {
             </CardHeader>
             <CardContent>
               <p className="text-2xl font-semibold">
-                {temperature !== null ? `${temperature} C` : "25"}
+                {temperature !== null ? `${temperature} C` : "Carregando..."}
               </p>
               <p className="text-sm text-muted-foreground">Ideal: 24-26°C</p>
             </CardContent>
@@ -195,23 +192,23 @@ export function AquariumDashboardComponent() {
                     Alimentar os peixes (2x ao dia) - Alimentado {feedCount}{" "}
                     vezes
                   </span>
+                  <span>
+                    Alimentar os peixes - Última:{" "}
+                    {lastFeedDate ? lastFeedDate.toString() : "N/A"}
+                  </span>
                 </li>
                 <li className="flex items-center">
                   <Calendar className="mr-2" />
                   <span>
                     Troca parcial de água (25%) - Última troca:{" "}
-                    {lastWaterChange
-                      ? lastWaterChange.toLocaleDateString()
-                      : "N/A"}
+                    {lastWaterChange ? lastWaterChange.toString() : "N/A"}
                   </span>
                 </li>
                 <li className="flex items-center">
                   <AlertTriangle className="mr-2" />
                   <span>
                     Verificar filtro - Última verificação:{" "}
-                    {lastFilterChange
-                      ? lastFilterChange.toLocaleDateString()
-                      : "N/A"}
+                    {lastFilterChange ? lastFilterChange.toString() : "N/A"}
                   </span>
                 </li>
               </ul>
