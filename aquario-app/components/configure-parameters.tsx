@@ -14,6 +14,7 @@ export function ConfigureParametersComponent() {
     alimentacao: "",
     iluminacao: "",
     qualidadeAgua: "",
+    corSelecionada: ""  // Adicionando um estado para armazenar a cor selecionada
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,11 +24,28 @@ export function ConfigureParametersComponent() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Implementar lógica para salvar configurações
+
+    if (!parameters.temperatura || !parameters.alimentacao || !parameters.iluminacao || !parameters.qualidadeAgua) {
+      toast({
+        title: "Erro",
+        description: "Todos os campos devem ser preenchidos.",
+        variant: "destructive",
+      })
+      return
+    }
+
     console.log("Configurações salvas:", parameters)
     toast({
       title: "Configurações Salvas",
       description: "Os parâmetros do aquário foram atualizados com sucesso.",
+    })
+  }
+
+  const handleColorChange = (color: string) => {
+    setParameters({ ...parameters, corSelecionada: color })
+    toast({
+      title: "Cor Selecionada",
+      description: `A cor ${color} foi selecionada.`,
     })
   }
 
@@ -90,10 +108,37 @@ export function ConfigureParametersComponent() {
               placeholder="Ex: Boa"
             />
           </div>
+          
+          {/* Adicionando os botões de cores */}
+          <div className="space-y-2">
+            <Label className="flex items-center">
+              Escolha uma cor
+            </Label>
+            <div className="flex space-x-2">
+              <Button
+                style={{ backgroundColor: "red" }}
+                onClick={() => handleColorChange("Red")}
+              >
+                Vermelho
+              </Button>
+              <Button
+                style={{ backgroundColor: "blue" }}
+                onClick={() => handleColorChange("Blue")}
+              >
+                Azul
+              </Button>
+              <Button
+                style={{ backgroundColor: "green" }}
+                onClick={() => handleColorChange("Green")}
+              >
+                Verde
+              </Button>
+            </div>
+          </div>
         </form>
       </CardContent>
       <CardFooter>
-        <Button onClick={handleSubmit} className="w-full">Salvar Configurações</Button>
+        <Button type="submit" onClick={handleSubmit} className="w-full">Salvar Configurações</Button>
       </CardFooter>
     </Card>
   )
