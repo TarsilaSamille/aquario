@@ -1,31 +1,33 @@
-"use client"
+'use client'
 
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Thermometer, Fish, Sun, Droplet } from 'lucide-react'
 import { toast } from "@/hooks/use-toast"
 
-export function ConfigureParametersComponent() {
-  const [parameters, setParameters] = useState({
-    temperatura: "",
-    alimentacao: "",
-    iluminacao: "",
-    qualidadeAgua: "",
-    corSelecionada: ""  // Adicionando um estado para armazenar a cor selecionada
+export function ConfigureAquariumActions() {
+  const [selectedForm, setSelectedForm] = useState<string | null>(null)
+
+  // Dados que serão preenchidos nos formulários
+  const [formData, setFormData] = useState({
+    data: "",
+    ultimaData: "",
+    detalhes: ""
   })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Atualiza os dados do formulário
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setParameters({ ...parameters, [name]: value })
+    setFormData({ ...formData, [name]: value })
   }
 
+  // Função de envio de dados (por enquanto apenas simula o envio)
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-
-    if (!parameters.temperatura || !parameters.alimentacao || !parameters.iluminacao || !parameters.qualidadeAgua) {
+    
+    if (!formData.data || !formData.ultimaData) {
       toast({
         title: "Erro",
         description: "Todos os campos devem ser preenchidos.",
@@ -33,112 +35,95 @@ export function ConfigureParametersComponent() {
       })
       return
     }
-
-    console.log("Configurações salvas:", parameters)
+    
+    // Simula o envio dos dados
     toast({
-      title: "Configurações Salvas",
-      description: "Os parâmetros do aquário foram atualizados com sucesso.",
+      title: "Dados Enviados",
+      description: `Os dados para a ação ${selectedForm} foram enviados com sucesso.`,
     })
-  }
-
-  const handleColorChange = (color: string) => {
-    setParameters({ ...parameters, corSelecionada: color })
-    toast({
-      title: "Cor Selecionada",
-      description: `A cor ${color} foi selecionada.`,
+    
+    // Limpar o formulário após envio
+    setFormData({
+      data: "",
+      ultimaData: "",
+      detalhes: ""
     })
   }
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center">Configurar Parâmetros do Aquário</CardTitle>
+        <CardTitle className="text-2xl font-bold text-center">Ações do Aquário</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="temperatura" className="flex items-center">
-              <Thermometer className="w-4 h-4 mr-2" />
-              Temperatura
-            </Label>
-            <Input
-              id="temperatura"
-              name="temperatura"
-              value={parameters.temperatura}
-              onChange={handleChange}
-              placeholder="Ex: 25°C"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="alimentacao" className="flex items-center">
-              <Fish className="w-4 h-4 mr-2" />
-              Alimentação
-            </Label>
-            <Input
-              id="alimentacao"
-              name="alimentacao"
-              value={parameters.alimentacao}
-              onChange={handleChange}
-              placeholder="Ex: 2x ao dia"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="iluminacao" className="flex items-center">
-              <Sun className="w-4 h-4 mr-2" />
-              Iluminação
-            </Label>
-            <Input
-              id="iluminacao"
-              name="iluminacao"
-              value={parameters.iluminacao}
-              onChange={handleChange}
-              placeholder="Ex: 12 horas/dia"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="qualidadeAgua" className="flex items-center">
-              <Droplet className="w-4 h-4 mr-2" />
-              Qualidade da Água
-            </Label>
-            <Input
-              id="qualidadeAgua"
-              name="qualidadeAgua"
-              value={parameters.qualidadeAgua}
-              onChange={handleChange}
-              placeholder="Ex: Boa"
-            />
-          </div>
-          
-          {/* Adicionando os botões de cores */}
-          <div className="space-y-2">
-            <Label className="flex items-center">
-              Escolha uma cor
-            </Label>
-            <div className="flex space-x-2">
-              <Button
-                style={{ backgroundColor: "red" }}
-                onClick={() => handleColorChange("Red")}
-              >
-                Vermelho
-              </Button>
-              <Button
-                style={{ backgroundColor: "blue" }}
-                onClick={() => handleColorChange("Blue")}
-              >
-                Azul
-              </Button>
-              <Button
-                style={{ backgroundColor: "green" }}
-                onClick={() => handleColorChange("Green")}
-              >
-                Verde
-              </Button>
+        {/* Botões para selecionar a ação */}
+        <div className="flex space-x-2 mb-4">
+          <Button onClick={() => setSelectedForm("trocaFiltro")} className="w-full">
+            Troca de Filtro
+          </Button>
+          <Button onClick={() => setSelectedForm("registrarAlimentacao")} className="w-full">
+            Registrar Alimentação
+          </Button>
+          <Button onClick={() => setSelectedForm("trocaAgua")} className="w-full">
+            Troca de Água
+          </Button>
+        </div>
+
+        {/* Formulário Dinâmico baseado na ação selecionada */}
+        {selectedForm && (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="data" className="flex items-center">
+                Data da {selectedForm === "trocaFiltro" ? "Troca de Filtro" : selectedForm === "registrarAlimentacao" ? "Alimentação" : "Troca de Água"}
+              </Label>
+              <Input
+                id="data"
+                name="data"
+                type="date"
+                value={formData.data}
+                onChange={handleInputChange}
+                required
+              />
             </div>
-          </div>
-        </form>
+            <div className="space-y-2">
+              <Label htmlFor="ultimaData" className="flex items-center">
+                Última {selectedForm === "trocaFiltro" ? "Troca de Filtro" : selectedForm === "registrarAlimentacao" ? "Alimentação" : "Troca de Água"}
+              </Label>
+              <Input
+                id="ultimaData"
+                name="ultimaData"
+                type="date"
+                value={formData.ultimaData}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="detalhes" className="flex items-center">
+                Detalhes (opcional)
+              </Label>
+              <Input
+                id="detalhes"
+                name="detalhes"
+                value={formData.detalhes}
+                onChange={handleInputChange}
+                placeholder="Ex: Observações sobre o filtro, alimentação ou troca de água"
+              />
+            </div>
+
+            <Button type="submit" className="w-full">
+              Enviar Dados
+            </Button>
+          </form>
+        )}
       </CardContent>
       <CardFooter>
-        <Button type="submit" onClick={handleSubmit} className="w-full">Salvar Configurações</Button>
+        <Button
+          onClick={() => setSelectedForm(null)}
+          className="w-full bg-red-500 text-white"
+        >
+          Cancelar
+        </Button>
       </CardFooter>
     </Card>
   )
