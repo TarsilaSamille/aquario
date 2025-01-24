@@ -1,18 +1,8 @@
-
-# Relatório de Modelagem de Banco de Dados - Projeto de Aquário Inteligente
+## Apresentação do Projeto - Parte 2 (10/12/2024 - 10/12/2024)
 
 ## Introdução
 
-Este relatório descreve a modelagem do banco de dados para o "Projeto de Aquário Inteligente". O objetivo deste projeto é criar um sistema que monitore e controle parâmetros do ambiente de um aquário, como temperatura, pH, e níveis de oxigênio, usando sensores e atuadores. A modelagem de banco de dados visa garantir a estruturação eficiente e segura dos dados coletados pelo sistema, permitindo análise em tempo real e controle automatizado do aquário.
-
-## Requisitos do Sistema
-
-O banco de dados precisa atender aos seguintes requisitos:
-
-- Armazenar dados dos sensores, como temperatura, pH, e oxigênio.
-- Armazenar informações sobre os dispositivos de controle (bombas, luzes, etc.).
-- Registrar históricos de dados para análises futuras.
-- Garantir a integridade dos dados e segurança na comunicação entre os sensores e o banco de dados.
+Este relatório descreve a modelagem do banco de dados para o "Projeto de Aquário Inteligente". O objetivo deste projeto é criar um sistema que monitore e controle parâmetros do ambiente de um aquário, como temperatura, pH, usando sensores e atuadores. A modelagem de banco de dados visa garantir a estruturação eficiente e segura dos dados coletados pelo sistema, permitindo análise em tempo real e controle automatizado do aquário.
 
 ## Diagrama Entidade-Relacionamento (ER)
 
@@ -126,6 +116,207 @@ Com base no Diagrama ER, o modelo relacional do banco de dados foi estruturado d
 - **Sensor** e **Leitura**: O campo `sensor_id` em "Leitura" é uma chave estrangeira que referencia `sensor_id` em "Sensor".
 - **Dispositivo** e **Controle**: O campo `dispositivo_id` em "Controle" é uma chave estrangeira que referencia `dispositivo_id` em "Dispositivo".
 - **Aquário** com **Sensor** e **Dispositivo**: Ambas as entidades têm relação de um-para-muitos com "Aquário".
+
+
+### 
+Diagramas:
+- Sequência
+- Atividades
+- Máquina de Estados
+- Casos de uso
+- Classes
+- Blocos
+- Entidade & Relacionamento (E&R)
+- Protótipo do aplicativo/aplicação (design das telas)
+- Outros 
+Diagramas
+
+Diagrama de Sequência
+```mermaid
+sequenceDiagram
+    participant Usuário
+    participant InterfaceWeb
+    participant ESP32
+    participant Sensor
+    participant Atuador
+
+    Usuário->>InterfaceWeb: Configura parâmetros
+    InterfaceWeb->>ESP32: Envia configurações
+    ESP32->>Sensor: Solicita dados do sensor
+    Sensor-->>ESP32: Retorna dados do sensor
+    ESP32->>Atuador: Ajusta atuador conforme necessário
+    ESP32->>InterfaceWeb: Atualiza dados em tempo real
+    InterfaceWeb-->>Usuário: Exibe dados atualizados
+```
+![alt text](image-7.png)
+
+Diagrama de Atividades
+```mermaid
+
+flowchart TD
+    A[Início] --> B[Configurar parâmetros via Interface Web]
+    B --> C[Enviar configurações para ESP32]
+    C --> D[Monitorar dados dos sensores]
+    D --> E[Analisar dados]
+    E --> F{Dados dentro dos parâmetros?}
+    F -->|Sim| G[Manter estado atual]
+    F -->|Não| H[Ajustar atuadores]
+    H --> I[Atualizar Interface Web]
+    I --> J[Fim]
+
+```
+![alt text](image-6.png)
+
+Diagrama de Máquina de Estados
+```mermaid
+
+stateDiagram-v2
+    [*] --> Inicializando
+    Inicializando --> Monitorando
+    Monitorando --> Analisando
+    Analisando --> Ajustando
+    Ajustando --> Atualizando
+    Atualizando --> Monitorando
+    Monitorando --> [*]
+
+
+```
+![alt text](image-5.png)
+
+Diagrama de Casos de Uso
+```mermaid
+
+classDiagram
+    class Usuario {
+        +configurarParametros()
+        +visualizarDados()
+    }
+    class InterfaceWeb {
+        +enviarConfiguracoes()
+        +exibirDados()
+    }
+    class ESP32 {
+        +receberConfiguracoes()
+        +monitorarSensores()
+        +ajustarAtuadores()
+    }
+    class Sensor {
+        +enviarDados()
+    }
+    class Atuador {
+        +ajustarEstado()
+    }
+    Usuario --> InterfaceWeb
+    InterfaceWeb --> ESP32
+    ESP32 --> Sensor
+    ESP32 --> Atuador
+
+```
+![alt text](image-4.png)
+
+Diagrama de Classes
+```mermaid
+
+classDiagram
+    class Usuario {
+        +String nome
+        +String email
+        +configurarParametros()
+        +visualizarDados()
+    }
+    class InterfaceWeb {
+        +enviarConfiguracoes()
+        +exibirDados()
+    }
+    class ESP32 {
+        +receberConfiguracoes()
+        +monitorarSensores()
+        +ajustarAtuadores()
+    }
+    class Sensor {
+        +String tipo
+        +String valor
+        +enviarDados()
+    }
+    class Atuador {
+        +String tipo
+        +ajustarEstado()
+    }
+    Usuario --> InterfaceWeb
+    InterfaceWeb --> ESP32
+    ESP32 --> Sensor
+    ESP32 --> Atuador
+
+```
+![alt text](image-3.png)
+
+Diagrama de Blocos
+```mermaid
+
+graph TD
+    A[ESP32] --> B[Sensor de Temperatura]
+    A --> C[Sensor de pH]
+    A --> D[Sensor de Oxigênio Dissolvido]
+    A --> E[Sensor de Turbidez]
+    A --> F[Aquecedor]
+    A --> G[Alimentador Automático]
+    A --> H[Lâmpadas LED]
+    A --> I[Bomba de Água]
+
+```
+![alt text](image-2.png)
+
+Diagrama Entidade & Relacionamento (E&R)
+```mermaid
+
+erDiagram
+    USUARIO {
+        String nome
+        String email
+    }
+    INTERFACEWEB {
+        String parametrosConfiguracao
+        String dadosMonitoramento
+    }
+    ESP32 {
+        String parametrosConfiguracao
+        String temperatura
+        String ph
+        String oxigenioDissolvido
+        String turbidez
+    }
+    SENSOR {
+        String id
+        String tipo
+        String valor
+    }
+    ATUADOR {
+        String id
+        String tipo
+        String estado
+    }
+    USUARIO ||--o{ INTERFACEWEB : usa
+    INTERFACEWEB ||--o{ ESP32 : comunica
+    ESP32 ||--o{ SENSOR : monitora
+    ESP32 ||--o{ ATUADOR : controla
+    SENSOR ||--o{ ESP32 : envia_dados
+    ATUADOR ||--o{ ESP32 : recebe_comandos
+```
+![alt text](image-1.png)
+
+Protótipo do Aplicativo/Aplicação (Design das Telas)
+```mermaid
+
+flowchart TD
+    A[Login] --> B[Dashboard]
+    B --> C[Configurar Parâmetros]
+    B --> D[Visualizar Dados]
+    C --> E[Salvar Configurações]
+    D --> F[Atualizar Dados]
+```
+
+![alt text](image.png)
+
 
 ## Conclusão
 
