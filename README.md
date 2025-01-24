@@ -5,6 +5,8 @@ Slide: https://www.overleaf.com/5849787659hbvkpqjvbzqx#0b17a5
 
 Modelo: https://wokwi.com/projects/420874525508839425
 
+Vídeo de funcionamento: https://drive.google.com/file/d/1LCMATf_cul5WQqiR5K_QcNsT1p1HqO0o/view?usp=drive_link
+
 
 
 
