@@ -15,9 +15,9 @@
 ---
 
 ## Fast Links
-- **Frontend (Admin)**: [Aquário Frontend](https://aquario-sepia.vercel.app/admin)
+- **Frontend (Admin)**: [Aquário Frontend](https://aquario-sepia.vercel.app)
 - **Slides do projeto**: [Overleaf - Slides](https://www.overleaf.com/5849787659hbvkpqjvbzqx#0b17a5)
-- **Modelo**: [Simulação no Wokwi](https://wokwi.com/projects/420874525508839425)
+- **Modelo**: [Simulação no Wokwi] https://wokwi.com/projects/420874525508839425
 - **Vídeo de funcionamento**: [Drive - Vídeo](https://drive.google.com/file/d/1LCMATf_cul5WQqiR5K_QcNsT1p1HqO0o/view?usp=drive_link)
 
 ---
